@@ -8,6 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default defineConfig({
+  base: '/uptime-status/',
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
@@ -44,5 +45,16 @@ export default defineConfig({
   ],
   server: {
     port: 3000
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          charts: ['recharts'],
+          query: ['@tanstack/react-query'],
+        }
+      }
+    }
   }
 });

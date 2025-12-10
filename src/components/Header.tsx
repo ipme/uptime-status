@@ -14,23 +14,7 @@ export function Header() {
       <div className="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
         <h1 className="text-xl font-bold text-green-400">{config.siteName}</h1>
 
-        <div className="flex items-center gap-6">
-          <nav className="flex items-center gap-4">
-            {config.navi.map((item, idx) => (
-              <a
-                key={idx}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-slate-300 hover:text-green-400 transition-colors"
-              >
-                {item.text}
-              </a>
-            ))}
-          </nav>
-
-          <ThemeToggle theme={theme} setTheme={setTheme} />
-        </div>
+        <ThemeToggle theme={theme} setTheme={setTheme} />
       </div>
     </header>
   );

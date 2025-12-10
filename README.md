@@ -2,6 +2,8 @@
 
 基于 UptimeRobot API 的现代化服务状态监控面板。
 
+演示地址：https://lyhxx.github.io/uptime-status
+
 ## 特性
 
 - 🚀 **现代技术栈** - Vite + React 18 + TypeScript + TailwindCSS
@@ -17,14 +19,15 @@
 
 ## 快速开始
 
-### 部署
+### GitHub Pages 部署
 
-1. 克隆项目
+1. Fork 本项目
 2. 修改 `src/config/config.ts` 配置文件
-3. 运行 `npm run build`
-4. 将 `dist` 目录部署到任意静态服务器
+3. 修改 `vite.config.ts` 中的 `base` 为你的仓库名
+4. 推送代码，GitHub Actions 会自动构建部署
+5. 在仓库 Settings → Pages 中启用 GitHub Pages，Source 选择 "GitHub Actions"
 
-### 开发
+### 本地开发
 
 ```bash
 # 安装依赖
@@ -43,18 +46,26 @@ npm run build
 
 ```typescript
 const config: AppConfig = {
+  // 网站地址（用于 SEO）
+  siteUrl: 'https://lyhxx.github.io/uptime-status',
+
   // 网站标题
   siteName: '服务状态监控面板',
 
+  // 网站描述（用于 SEO）
+  siteDescription: '实时监控服务运行状态，查看历史可用性数据',
+
+  // 网站关键词（用于 SEO）
+  siteKeywords: '服务监控,状态页面,UptimeRobot,可用性监控',
+
   // UptimeRobot API Keys
-  // 支持 Monitor-Specific 和 Read-Only API Key
   apiKeys: ['your-api-key'],
 
-  // 自定义 API 代理地址（可选）
+  // 自定义 API 代理地址（可选，用于解决跨域问题）
   apiUrl: '',
 
   // 默认显示天数 (30, 60, 90)
-  countDays: 90,
+  countDays: 30,
 
   // 是否显示站点链接
   showLink: true,
@@ -68,11 +79,14 @@ const config: AppConfig = {
   // 默认状态筛选 ('all' | 'ok' | 'down')
   defaultFilter: 'all',
 
-  // 导航栏菜单
-  navi: [
-    { text: '首页', url: 'https://example.com/' },
-    { text: 'GitHub', url: 'https://github.com/xxx' },
-  ],
+  // 自动刷新间隔（秒）
+  refetchInterval: 300,
+
+  // 数据新鲜时间（秒）
+  staleTime: 120,
+
+  // 缓存保留时间（秒）
+  cacheTime: 600,
 };
 ```
 
@@ -81,24 +95,21 @@ const config: AppConfig = {
 在 URL 后添加 `?embed=1` 参数可启用精简嵌入模式：
 
 ```html
-<iframe src="https://status.example.com/?embed=1" width="100%" height="600"></iframe>
+<iframe src="https://lyhxx.github.io/uptime-status/?embed=1" width="100%" height="600"></iframe>
 ```
 
 ## API 代理
 
-如需自建 API 代理解决跨域问题，参考以下 Nginx 配置：
+项目包含 Cloudflare Worker 代理脚本 `worker/uptimerobot-proxy.js`，可部署到 Cloudflare Workers 解决跨域问题。
+
+也可以使用 Nginx 代理：
 
 ```nginx
-server {
-  listen 80;
-  server_name cors.status.example.com;
-  
-  location / {
-    proxy_ssl_server_name on;
-    proxy_pass https://api.uptimerobot.com/;
-    proxy_hide_header Access-Control-Allow-Origin;
-    add_header Access-Control-Allow-Origin * always;
-  }
+location /api/uptimerobot/ {
+  proxy_ssl_server_name on;
+  proxy_pass https://api.uptimerobot.com/;
+  proxy_hide_header Access-Control-Allow-Origin;
+  add_header Access-Control-Allow-Origin * always;
 }
 ```
 
@@ -111,7 +122,6 @@ server {
 - [TanStack Query](https://tanstack.com/query) - 数据请求
 - [Zustand](https://zustand-demo.pmnd.rs/) - 状态管理
 - [Recharts](https://recharts.org/) - 图表库
-- [Day.js](https://day.js.org/) - 日期处理
 
 ## License
 

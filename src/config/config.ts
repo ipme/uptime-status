@@ -1,4 +1,4 @@
-import type { AppConfig } from './index';
+import type { AppConfig } from './types';
 
 /**
  * 应用配置文件
@@ -7,11 +7,17 @@ import type { AppConfig } from './index';
 const config: AppConfig = {
   // ===== 基础配置 =====
 
+  // 网站地址（用于 SEO）
+  siteUrl: 'https://lyhxx.github.io/uptime-status',
+
   // 网站标题
   siteName: '服务状态监控面板',
 
   // 网站描述（用于 SEO）
-  siteDescription: '基于 UptimeRobot 的服务状态监控面板',
+  siteDescription: '实时监控服务运行状态，查看历史可用性数据',
+
+  // 网站关键词（用于 SEO）
+  siteKeywords: '服务监控,状态页面,UptimeRobot,可用性监控',
 
   // UptimeRobot API Keys
   // 支持 Monitor-Specific 和 Read-Only API Key
@@ -39,11 +45,16 @@ const config: AppConfig = {
   // 默认状态筛选 ('all' | 'ok' | 'down')
   defaultFilter: 'all',
 
-  // ===== 导航菜单 =====
+  // ===== 缓存配置（单位：秒）=====
 
-  navi: [
-    { text: 'GitHub', url: 'https://github.com/lyhxx/lyhxx.github.io' },
-  ],
+  // 自动刷新间隔（默认 5 分钟）
+  refetchInterval: 300,
+
+  // 数据新鲜时间，此时间内不会重新请求（默认 2 分钟）
+  staleTime: 120,
+
+  // 缓存保留时间（默认 10 分钟）
+  cacheTime: 600,
 };
 
 export default config;

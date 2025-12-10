@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: 部署状态监控面板
 
 on:
   push:
