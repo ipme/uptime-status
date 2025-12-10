@@ -4,7 +4,7 @@
 
 演示地址：https://lyhxx.github.io/uptime-status
 
-![预览图](docs/images/perview.png)
+![预览图](docs/images/preview.png)
 
 ## 特性
 
