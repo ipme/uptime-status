@@ -27,7 +27,7 @@ interface AppState {
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set, get) => {
+    (set) => {
       const config = getConfig();
       return {
         theme: config.defaultTheme,
