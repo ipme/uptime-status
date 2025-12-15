@@ -27,9 +27,10 @@ const config: AppConfig = {
 
   // 自定义 API 代理地址（可选，用于解决跨域问题）
   // 留空则使用官方 API: https://api.uptimerobot.com/v2/getMonitors
-  apiUrl: 'https://upx-status.debian.workers.dev/v2/getMonitors',
-
+  //apiUrl: 'https://upx-status.debian.workers.dev/v2/getMonitors',
   //apiUrl: 'https://javai.cn/api/uptimerobot/v2/getMonitors',
+
+  apiUrl: 'https://upx-status.ifca.eu.org/v2/getMonitors',
 
   // ===== 显示配置 =====
 
