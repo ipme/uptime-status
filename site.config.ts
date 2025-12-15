@@ -9,5 +9,5 @@ export default {
   base: '/uptime-status/',
 
   // 网站地址（用于 SEO）
-  siteUrl: 'https://lyhxx.github.io/uptime-status',
+  siteUrl: 'https://ipme.github.io/uptime-status',
 };
