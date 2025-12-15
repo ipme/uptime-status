@@ -23,11 +23,14 @@ const config: AppConfig = {
   // UptimeRobot API Keys
   // 支持 Monitor-Specific 和 Read-Only API Key
   // 可以配置多个 key，会合并显示所有监控项
-  apiKeys: ['ur3205001-05db75e224a0309f16fd982c'],
+  apiKeys: ['ur886956-433bba331c320333431cec26'],
 
   // 自定义 API 代理地址（可选，用于解决跨域问题）
   // 留空则使用官方 API: https://api.uptimerobot.com/v2/getMonitors
-  apiUrl: 'https://upx-status.debian.workers.dev/v2/getMonitors',
+  apiUrl: [
+    'https://upx-status.debian.workers.dev/v2/getMonitors',
+    'https://javai.cn/api/uptimerobot/v2/getMonitors'
+  ],
 
   // ===== 显示配置 =====
 
