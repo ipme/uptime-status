@@ -91,6 +91,17 @@ Add `?embed=1` parameter to URL for minimal embed mode:
 
 Due to browser CORS restrictions, direct UptimeRobot API calls will fail. You need to configure an API proxy.
 
+### Public Proxy
+
+If you don't want to set up your own proxy, you can use this public proxy:
+
+```bash
+# Configure in .env file
+VITE_API_PROXY_URL=https://javai.cn/api/uptimerobot/v2/getMonitors
+```
+
+> ⚠️ **Warning**: This is a public proxy service. Stability is not guaranteed. For more stable service, self-hosted proxy is recommended.
+
 ### Nginx Proxy
 
 If using your own server:

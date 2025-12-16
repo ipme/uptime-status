@@ -88,6 +88,17 @@ npm run build
 
 由于浏览器跨域限制，直接调用 UptimeRobot API 会失败，需要配置 API 代理。
 
+### 公共代理
+
+如果不想自建代理，可以使用以下公共代理：
+
+```bash
+# 在 .env 文件中配置
+VITE_API_PROXY_URL=https://javai.cn/api/uptimerobot/v2/getMonitors
+```
+
+> ⚠️ **注意**：此为公共代理服务，不保证稳定性。如需更稳定的服务，建议自建代理。
+
 ### Nginx 代理
 
 如果使用自己的服务器：
