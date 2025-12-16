@@ -4,7 +4,7 @@
 # 无需使用 GitHub Actions
 # 
 # 部署步骤：
-# 1. 访问 https://pages.edgeone.ai/
+# 1. 访问 https://cloud.tencent.com/product/teo
 # 2. 连接你的 GitHub 账号
 # 3. 选择本仓库
 # 4. 配置构建设置（已在 edgeone.json 中定义）

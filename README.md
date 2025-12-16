@@ -4,17 +4,9 @@
 
 基于 UptimeRobot API 的现代化服务状态监控面板。
 
-演示地址：[EdgeOne Pages 部署](https://pages.edgeone.ai/)
+演示地址：[EdgeOne Pages 部署](https://cloud.tencent.com/product/teo)
 
 ![预览图](docs/images/preview.png)
-
-## 快速部署
-
-[![Deploy to EdgeOne](https://pages.edgeone.ai/button.svg)](https://pages.edgeone.ai/new?template=https://github.com/lyhxx/uptime-status)
-
-点击上方按钮一键部署到 EdgeOne Pages，部署时需要配置：
-- `VITE_UPTIME_API_KEYS`: 你的 UptimeRobot API Key（必填）
-- 其他环境变量可选，使用默认值即可
 
 ## 特性
 
@@ -37,19 +29,7 @@
 
 ### EdgeOne Pages 部署（推荐）
 
-#### 方式一：一键部署
-
-1. 点击上方 "Deploy to EdgeOne" 按钮
-2. 登录/注册 EdgeOne 账号
-3. 配置环境变量：
-   - `VITE_UPTIME_API_KEYS`: 填入你的 UptimeRobot API Key（[获取地址](https://uptimerobot.com/dashboard#mySettings)）
-   - 其他变量使用默认值即可
-4. 点击部署，等待构建完成
-5. 访问分配的域名即可使用
-
-#### 方式二：从 GitHub 导入
-
-1. 访问 [EdgeOne Pages](https://pages.edgeone.ai/)
+1. 访问 [EdgeOne Pages](https://cloud.tencent.com/product/teo)
 2. 连接你的 GitHub 账号
 3. 选择本仓库
 4. 配置构建设置：
@@ -120,66 +100,7 @@ cp .env.example .env
 | `VITE_SITE_NAME` | 网站名称 | 否 | `服务状态监控` |
 | `VITE_SITE_DESCRIPTION` | 网站描述 | 否 | `实时监控服务状态` |
 
-## 配置说明
 
-### 环境变量配置（推荐）
-
-EdgeOne Pages 部署时通过环境变量配置，无需修改代码：
-
-```bash
-# .env 文件示例（本地开发用）
-VITE_UPTIME_API_KEYS=your-api-key-1,your-api-key-2
-VITE_API_PROXY_URL=/api/uptimerobot/v2/getMonitors
-VITE_SITE_NAME=服务状态监控面板
-VITE_SITE_DESCRIPTION=实时监控服务运行状态
-```
-
-### 应用配置 (src/config/config.ts)
-
-本地开发时可直接修改此文件，生产环境建议使用环境变量：
-
-```typescript
-const config: AppConfig = {
-  // 网站标题（支持环境变量 VITE_SITE_NAME）
-  siteName: '服务状态监控面板',
-
-  // 网站描述（支持环境变量 VITE_SITE_DESCRIPTION）
-  siteDescription: '实时监控服务运行状态，查看历史可用性数据',
-
-  // 网站关键词（用于 SEO）
-  siteKeywords: '服务监控,状态页面,UptimeRobot,可用性监控',
-
-  // UptimeRobot API Keys（支持环境变量 VITE_UPTIME_API_KEYS）
-  apiKeys: ['your-api-key'],
-
-  // API 代理地址（支持环境变量 VITE_API_PROXY_URL）
-  apiUrl: '',
-
-  // 默认显示天数 (30, 60, 90)
-  countDays: 30,
-
-  // 是否显示站点链接
-  showLink: true,
-
-  // 默认主题 ('light' | 'dark' | 'system')
-  defaultTheme: 'system',
-
-  // 默认排序方式 ('name' | 'status' | 'uptime')
-  defaultSort: 'name',
-
-  // 默认状态筛选 ('all' | 'ok' | 'down' | 'paused')
-  defaultFilter: 'all',
-
-  // 自动刷新间隔（秒）
-  refetchInterval: 300,
-
-  // 数据新鲜时间（秒）
-  staleTime: 120,
-
-  // 缓存保留时间（秒）
-  cacheTime: 600,
-};
-```
 
 ## 嵌入模式
 

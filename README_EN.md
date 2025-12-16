@@ -4,7 +4,7 @@
 
 A modern service status monitoring panel based on UptimeRobot API.
 
-Demo: [EdgeOne Pages Deployment](https://pages.edgeone.ai/)
+Demo: [EdgeOne Pages Deployment](https://edgeone.ai)
 
 ![Preview](docs/images/preview.png)
 
@@ -29,21 +29,7 @@ Demo: [EdgeOne Pages Deployment](https://pages.edgeone.ai/)
 
 ### EdgeOne Pages Deployment (Recommended)
 
-#### Method 1: One-Click Deploy
-
-[![Deploy to EdgeOne Pages](https://pages.edgeone.ai/deploy-button.svg)](https://pages.edgeone.ai/new?template=https://github.com/lyhxx/uptime-status)
-
-1. Click the button above
-2. Login/Register EdgeOne account
-3. Configure environment variables:
-   - `VITE_UPTIME_API_KEYS`: Your UptimeRobot API Keys (required)
-   - Other variables are optional
-4. Click deploy and wait for build
-5. Access your deployed site
-
-#### Method 2: Import from GitHub
-
-1. Visit [EdgeOne Pages](https://pages.edgeone.ai/)
+1. Visit [EdgeOne Pages](https://edgeone.ai)
 2. Connect your GitHub account
 3. Select this repository
 4. Configure build settings:
@@ -95,75 +81,7 @@ npm run build
 > Note: Use Read-only API Key, not Main API Key, to prevent malicious operations if leaked.
 
 
-## Configuration
 
-### Environment Variables (Recommended)
-
-Configure via environment variables for EdgeOne Pages deployment:
-
-```bash
-# .env file example (for local development)
-VITE_UPTIME_API_KEYS=your-api-key-1,your-api-key-2
-VITE_API_PROXY_URL=/api/uptimerobot/v2/getMonitors
-VITE_SITE_NAME=Service Status Monitor
-VITE_SITE_DESCRIPTION=Real-time service monitoring
-```
-
-**Environment Variables**:
-
-| Variable | Description | Required | Example |
-|----------|-------------|----------|---------|
-| `VITE_UPTIME_API_KEYS` | UptimeRobot API Keys (comma-separated) | Yes | `ur123...,ur456...` |
-| `VITE_API_PROXY_URL` | API proxy URL | No | `/api/uptimerobot/v2/getMonitors` |
-| `VITE_SITE_NAME` | Site name | No | `Status Monitor` |
-| `VITE_SITE_DESCRIPTION` | Site description | No | `Real-time monitoring` |
-
-### App Config (src/config/config.ts)
-
-For local development, you can modify this file directly. For production, use environment variables:
-
-```typescript
-const config: AppConfig = {
-  // Site title (supports VITE_SITE_NAME env var)
-  siteName: 'Service Status Monitor',
-
-  // Site description (supports VITE_SITE_DESCRIPTION env var)
-  siteDescription: 'Real-time service status monitoring',
-
-  // Site keywords (for SEO)
-  siteKeywords: 'service monitor,status page,UptimeRobot,uptime',
-
-  // UptimeRobot API Keys (supports VITE_UPTIME_API_KEYS env var)
-  apiKeys: ['your-api-key'],
-
-  // API proxy URL (supports VITE_API_PROXY_URL env var)
-  apiUrl: '',
-
-  // Default days to display (30, 60, 90)
-  countDays: 30,
-
-  // Show site links
-  showLink: true,
-
-  // Default theme ('light' | 'dark' | 'system')
-  defaultTheme: 'system',
-
-  // Default sort ('name' | 'status' | 'uptime')
-  defaultSort: 'name',
-
-  // Default filter ('all' | 'ok' | 'down' | 'paused')
-  defaultFilter: 'all',
-
-  // Auto refresh interval (seconds)
-  refetchInterval: 300,
-
-  // Data stale time (seconds)
-  staleTime: 120,
-
-  // Cache time (seconds)
-  cacheTime: 600,
-};
-```
 
 ## Embed Mode
 
