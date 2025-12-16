@@ -38,13 +38,14 @@ Demo: [https://status.javai.cn](https://status.javai.cn)
    - **Output directory**: `dist`
    - **Node version**: 18.x or higher
 6. Configure environment variables:
-   - `VITE_UPTIME_API_KEYS`: Your UptimeRobot API Key (required, [Get it here](https://uptimerobot.com/dashboard#mySettings))
-   - `VITE_SITE_NAME`: Site name (optional)
-   - `VITE_SITE_DESCRIPTION`: Site description (optional)
+   - `VITE_UPTIME_API_KEYS`: Your UptimeRobot API Key (**Required**, [Get it here](https://uptimerobot.com/dashboard#mySettings))
+   - `VITE_API_PROXY_URL`: API proxy URL (**Optional**, leave empty to call official API directly, may have CORS issues)
+   - `VITE_SITE_NAME`: Site name (**Optional**)
+   - `VITE_SITE_DESCRIPTION`: Site description (**Optional**)
 7. Click "Deploy" and wait for build to complete
 8. Access your deployed site via the assigned domain
 
-> **Note**: After deploying to EdgeOne Pages, you may encounter CORS issues when accessing UptimeRobot API directly. If this happens, configure an API proxy to solve it. See "API Proxy" section below.
+> **Tip**: If you encounter CORS issues and cannot load data, configure `VITE_API_PROXY_URL`. See "API Proxy Configuration" section below.
 
 ### Local Development
 
@@ -55,8 +56,11 @@ npm install
 # Copy environment variables config
 cp .env.example .env
 
-# Edit .env file, fill in your API Key
-# VITE_UPTIME_API_KEYS=your-api-key
+# Edit .env file, configure the following variables:
+# VITE_UPTIME_API_KEYS=your-api-key (Required)
+# VITE_API_PROXY_URL= (Optional, leave empty to call official API directly, may have CORS issues)
+# VITE_SITE_NAME= (Optional)
+# VITE_SITE_DESCRIPTION= (Optional)
 
 # Start dev server
 npm run dev
@@ -64,6 +68,8 @@ npm run dev
 # Build for production
 npm run build
 ```
+
+> **Tip**: If you encounter CORS issues during local development, configure `VITE_API_PROXY_URL`. See "API Proxy Configuration" section below.
 
 ## Get API Key
 
@@ -87,24 +93,43 @@ Add `?embed=1` parameter to URL for minimal embed mode:
 <iframe src="https://your-domain.com/?embed=1" width="100%" height="600"></iframe>
 ```
 
-## API Proxy
+## API Proxy Configuration
 
-Due to browser CORS restrictions, direct UptimeRobot API calls will fail. You need to configure an API proxy.
+Due to browser CORS restrictions, direct UptimeRobot API calls may fail. If you encounter this issue, configure an API proxy.
 
-### Public Proxy
+### Option 1: Use Public Proxy
 
 If you don't want to set up your own proxy, you can use this public proxy:
 
 ```bash
-# Configure in .env file
+# Local development: Configure in .env file
+VITE_API_PROXY_URL=https://javai.cn/api/uptimerobot/v2/getMonitors
+
+# EdgeOne Pages deployment: Add to environment variables
 VITE_API_PROXY_URL=https://javai.cn/api/uptimerobot/v2/getMonitors
 ```
 
-> ⚠️ **Warning**: This is a public proxy service. Stability is not guaranteed. For more stable service, self-hosted proxy is recommended.
+> ⚠️ **Warning**: This is a public proxy service. Stability is not guaranteed. Self-hosted proxy is recommended for more stable service.
 
-### Nginx Proxy
+### Option 2: Cloudflare Worker (Recommended for Self-hosting)
 
-If using your own server:
+1. Login to [Cloudflare Dashboard](https://dash.cloudflare.com/)
+2. Go to Workers & Pages → Create Worker
+3. Paste the content of `worker/uptimerobot-proxy.js`
+4. Deploy and get Worker URL (e.g., `https://your-worker.workers.dev`)
+5. Configure environment variable:
+   ```bash
+   # Local development: Configure in .env file
+   VITE_API_PROXY_URL=https://your-worker.workers.dev/v2/getMonitors
+   
+   # EdgeOne Pages deployment: Add to environment variables
+   VITE_API_PROXY_URL=https://your-worker.workers.dev/v2/getMonitors
+   ```
+6. Rebuild/redeploy the project
+
+### Option 3: Nginx Proxy
+
+If using your own server, configure Nginx reverse proxy:
 
 ```nginx
 location /api/uptimerobot/ {
@@ -125,14 +150,14 @@ location /api/uptimerobot/ {
 }
 ```
 
-### Cloudflare Worker (Recommended)
+Then configure environment variable:
+```bash
+# Local development: Configure in .env file
+VITE_API_PROXY_URL=https://your-domain.com/api/uptimerobot/v2/getMonitors
 
-1. Login to [Cloudflare Dashboard](https://dash.cloudflare.com/)
-2. Go to Workers & Pages → Create Worker
-3. Paste the content of `worker/uptimerobot-proxy.js`
-4. Deploy and get Worker URL (e.g., `https://your-worker.workers.dev`)
-5. Set environment variable `VITE_API_PROXY_URL` to `https://your-worker.workers.dev/v2/getMonitors` in EdgeOne Pages
-6. Redeploy the project
+# EdgeOne Pages deployment: Add to environment variables
+VITE_API_PROXY_URL=https://your-domain.com/api/uptimerobot/v2/getMonitors
+```
 
 ## Tech Stack
 

@@ -38,13 +38,14 @@
    - **输出目录**: `dist`
    - **Node 版本**: 18.x 或更高
 6. 配置环境变量：
-   - `VITE_UPTIME_API_KEYS`: 你的 UptimeRobot API Key（必填，[获取地址](https://uptimerobot.com/dashboard#mySettings)）
-   - `VITE_SITE_NAME`: 网站名称（可选）
-   - `VITE_SITE_DESCRIPTION`: 网站描述（可选）
+   - `VITE_UPTIME_API_KEYS`: 你的 UptimeRobot API Key（**必填**，[获取地址](https://uptimerobot.com/dashboard#mySettings)）
+   - `VITE_API_PROXY_URL`: API 代理地址（**选填**，留空则直接调用官方 API，可能有跨域问题）
+   - `VITE_SITE_NAME`: 网站名称（**选填**）
+   - `VITE_SITE_DESCRIPTION`: 网站描述（**选填**）
 7. 点击"部署"，等待构建完成
 8. 访问分配的域名即可使用
 
-> **注意**：EdgeOne Pages 部署后，可能因浏览器跨域限制无法直接访问 UptimeRobot API。如遇到此问题，可配置 API 代理解决，详见下方"API 代理"章节。
+> **提示**：如遇到跨域问题无法加载数据，需要配置 `VITE_API_PROXY_URL`，详见下方"API 代理配置"章节。
 
 ### 本地开发
 
@@ -55,8 +56,11 @@ npm install
 # 复制环境变量配置文件
 cp .env.example .env
 
-# 编辑 .env 文件，填入你的 API Key
-# VITE_UPTIME_API_KEYS=your-api-key
+# 编辑 .env 文件，配置以下变量：
+# VITE_UPTIME_API_KEYS=your-api-key（必填）
+# VITE_API_PROXY_URL=（选填，留空则直接调用官方 API，可能有跨域问题）
+# VITE_SITE_NAME=（选填）
+# VITE_SITE_DESCRIPTION=（选填）
 
 # 启动开发服务器
 npm run dev
@@ -64,6 +68,8 @@ npm run dev
 # 构建生产版本
 npm run build
 ```
+
+> **提示**：本地开发如遇到跨域问题，需要配置 `VITE_API_PROXY_URL`，详见下方"API 代理配置"章节。
 
 ## 获取 API Key
 
@@ -84,24 +90,43 @@ npm run build
 <iframe src="https://your-domain.com/?embed=1" width="100%" height="600"></iframe>
 ```
 
-## API 代理
+## API 代理配置
 
-由于浏览器跨域限制，直接调用 UptimeRobot API 会失败，需要配置 API 代理。
+由于浏览器跨域限制，直接调用 UptimeRobot API 可能会失败。如遇到此问题，需要配置 API 代理。
 
-### 公共代理
+### 方案一：使用公共代理
 
 如果不想自建代理，可以使用以下公共代理：
 
 ```bash
-# 在 .env 文件中配置
+# 本地开发：在 .env 文件中配置
+VITE_API_PROXY_URL=https://javai.cn/api/uptimerobot/v2/getMonitors
+
+# EdgeOne Pages 部署：在环境变量中添加
 VITE_API_PROXY_URL=https://javai.cn/api/uptimerobot/v2/getMonitors
 ```
 
 > ⚠️ **注意**：此为公共代理服务，不保证稳定性。如需更稳定的服务，建议自建代理。
 
-### Nginx 代理
+### 方案二：Cloudflare Worker（推荐自建）
 
-如果使用自己的服务器：
+1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)
+2. 进入 Workers & Pages → Create Worker
+3. 将 `worker/uptimerobot-proxy.js` 的内容粘贴进去
+4. 部署后获得 Worker URL（如 `https://your-worker.workers.dev`）
+5. 配置环境变量：
+   ```bash
+   # 本地开发：在 .env 文件中配置
+   VITE_API_PROXY_URL=https://your-worker.workers.dev/v2/getMonitors
+   
+   # EdgeOne Pages 部署：在环境变量中添加
+   VITE_API_PROXY_URL=https://your-worker.workers.dev/v2/getMonitors
+   ```
+6. 重新构建/部署项目
+
+### 方案三：Nginx 代理
+
+如果使用自己的服务器，可以配置 Nginx 反向代理：
 
 ```nginx
 # UptimeRobot API 代理
@@ -125,14 +150,14 @@ location /api/uptimerobot/ {
 }
 ```
 
-### Cloudflare Worker（推荐）
+然后配置环境变量：
+```bash
+# 本地开发：在 .env 文件中配置
+VITE_API_PROXY_URL=https://your-domain.com/api/uptimerobot/v2/getMonitors
 
-1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)
-2. 进入 Workers & Pages → Create Worker
-3. 将 `worker/uptimerobot-proxy.js` 的内容粘贴进去
-4. 部署后获得 Worker URL（如 `https://your-worker.workers.dev`）
-5. 在 EdgeOne Pages 环境变量中设置 `VITE_API_PROXY_URL` 为 `https://your-worker.workers.dev/v2/getMonitors`
-6. 重新部署项目
+# EdgeOne Pages 部署：在环境变量中添加
+VITE_API_PROXY_URL=https://your-domain.com/api/uptimerobot/v2/getMonitors
+```
 
 ## 技术栈
 
