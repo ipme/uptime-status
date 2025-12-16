@@ -4,7 +4,7 @@
 
 基于 UptimeRobot API 的现代化服务状态监控面板。
 
-演示地址：[EdgeOne Pages 部署](https://cloud.tencent.com/product/teo)
+演示地址：[https://status.javai.cn](https://status.javai.cn)
 
 ![预览图](docs/images/preview.png)
 
@@ -39,23 +39,12 @@
    - **Node 版本**: 18.x 或更高
 6. 配置环境变量：
    - `VITE_UPTIME_API_KEYS`: 你的 UptimeRobot API Key（必填，[获取地址](https://uptimerobot.com/dashboard#mySettings)）
-   - `VITE_API_PROXY_URL`: `/api/uptimerobot/v2/getMonitors`（推荐，使用边缘函数加速访问）
    - `VITE_SITE_NAME`: 网站名称（可选）
    - `VITE_SITE_DESCRIPTION`: 网站描述（可选）
 7. 点击"部署"，等待构建完成
 8. 访问分配的域名即可使用
 
-#### EdgeOne 边缘函数（API 加速）
-
-EdgeOne 部署后自动启用边缘函数，通过边缘节点加速 API 访问：
-- 代理路径: `https://your-domain.com/api/uptimerobot/v2/getMonitors`
-- 边缘节点加速，国内访问更快
-- 自动处理 CORS
-
-部署时设置环境变量：
-```
-VITE_API_PROXY_URL=/api/uptimerobot/v2/getMonitors
-```
+> **注意**：EdgeOne Pages 部署后，可能因浏览器跨域限制无法直接访问 UptimeRobot API。如遇到此问题，可配置 API 代理解决，详见下方"API 代理"章节。
 
 ### 本地开发
 
@@ -87,28 +76,6 @@ npm run build
 
 > 注意：请使用 Read-only API Key，不要使用 Main API Key，避免泄露后被恶意操作。
 
-## 环境变量配置
-
-EdgeOne Pages 部署时通过环境变量配置，本地开发可创建 `.env` 文件：
-
-```bash
-# 复制示例文件
-cp .env.example .env
-
-# 编辑 .env 文件，填入你的配置
-```
-
-**环境变量说明**：
-
-| 变量名 | 说明 | 必填 | 示例 |
-|--------|------|------|------|
-| `VITE_UPTIME_API_KEYS` | UptimeRobot API Keys，多个用逗号分隔 | 是 | `ur123...,ur456...` |
-| `VITE_API_PROXY_URL` | API 代理地址 | 否 | `/api/uptimerobot/v2/getMonitors` |
-| `VITE_SITE_NAME` | 网站名称 | 否 | `服务状态监控` |
-| `VITE_SITE_DESCRIPTION` | 网站描述 | 否 | `实时监控服务状态` |
-
-
-
 ## 嵌入模式
 
 在 URL 后添加 `?embed=1` 参数可启用精简嵌入模式：
@@ -119,9 +86,7 @@ cp .env.example .env
 
 ## API 代理
 
-由于浏览器跨域限制，直接调用 UptimeRobot API 会失败，需要通过代理转发请求。
-
-> **注意**：如果使用 EdgeOne Pages 部署，边缘函数已自动配置，只需设置环境变量 `VITE_API_PROXY_URL=/api/uptimerobot/v2/getMonitors` 即可使用边缘加速，无需手动配置以下代理。
+由于浏览器跨域限制，直接调用 UptimeRobot API 会失败，需要配置 API 代理。
 
 ### Nginx 代理
 
@@ -149,15 +114,14 @@ location /api/uptimerobot/ {
 }
 ```
 
-### Cloudflare Worker
-
-如果使用 Cloudflare：
+### Cloudflare Worker（推荐）
 
 1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)
 2. 进入 Workers & Pages → Create Worker
 3. 将 `worker/uptimerobot-proxy.js` 的内容粘贴进去
 4. 部署后获得 Worker URL（如 `https://your-worker.workers.dev`）
-5. 设置环境变量 `VITE_API_PROXY_URL` 为 `https://your-worker.workers.dev/v2/getMonitors`
+5. 在 EdgeOne Pages 环境变量中设置 `VITE_API_PROXY_URL` 为 `https://your-worker.workers.dev/v2/getMonitors`
+6. 重新部署项目
 
 ## 技术栈
 
@@ -168,14 +132,6 @@ location /api/uptimerobot/ {
 - [TanStack Query](https://tanstack.com/query) - 数据请求
 - [Zustand](https://zustand-demo.pmnd.rs/) - 状态管理
 - [Recharts](https://recharts.org/) - 图表库
-
-## 自定义域名
-
-EdgeOne Pages 支持绑定自定义域名：
-
-1. 在 EdgeOne 控制台绑定你的域名
-2. 配置 DNS 解析（CNAME 或 A 记录）
-3. 域名生效后即可访问
 
 ## 常见问题
 

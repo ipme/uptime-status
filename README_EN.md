@@ -4,7 +4,7 @@
 
 A modern service status monitoring panel based on UptimeRobot API.
 
-Demo: [EdgeOne Pages Deployment](https://edgeone.ai)
+Demo: [https://status.javai.cn](https://status.javai.cn)
 
 ![Preview](docs/images/preview.png)
 
@@ -39,23 +39,12 @@ Demo: [EdgeOne Pages Deployment](https://edgeone.ai)
    - **Node version**: 18.x or higher
 6. Configure environment variables:
    - `VITE_UPTIME_API_KEYS`: Your UptimeRobot API Key (required, [Get it here](https://uptimerobot.com/dashboard#mySettings))
-   - `VITE_API_PROXY_URL`: `/api/uptimerobot/v2/getMonitors` (recommended, use edge function for faster access)
    - `VITE_SITE_NAME`: Site name (optional)
    - `VITE_SITE_DESCRIPTION`: Site description (optional)
 7. Click "Deploy" and wait for build to complete
 8. Access your deployed site via the assigned domain
 
-#### EdgeOne Edge Functions (API Acceleration)
-
-EdgeOne automatically enables edge functions to accelerate API access via edge nodes:
-- Proxy path: `https://your-domain.com/api/uptimerobot/v2/getMonitors`
-- Edge node acceleration for faster access
-- Automatic CORS handling
-
-Set environment variable during deployment:
-```
-VITE_API_PROXY_URL=/api/uptimerobot/v2/getMonitors
-```
+> **Note**: After deploying to EdgeOne Pages, you may encounter CORS issues when accessing UptimeRobot API directly. If this happens, configure an API proxy to solve it. See "API Proxy" section below.
 
 ### Local Development
 
@@ -100,9 +89,7 @@ Add `?embed=1` parameter to URL for minimal embed mode:
 
 ## API Proxy
 
-Due to browser CORS restrictions, direct UptimeRobot API calls will fail. You need a proxy.
-
-> **Note**: If deployed on EdgeOne Pages, edge functions are automatically configured. Just set environment variable `VITE_API_PROXY_URL=/api/uptimerobot/v2/getMonitors` to use edge acceleration, no need to manually configure the following proxies.
+Due to browser CORS restrictions, direct UptimeRobot API calls will fail. You need to configure an API proxy.
 
 ### Nginx Proxy
 
@@ -127,9 +114,14 @@ location /api/uptimerobot/ {
 }
 ```
 
-### Cloudflare Worker
+### Cloudflare Worker (Recommended)
 
-If using Cloudflare (see `worker/uptimerobot-proxy.js` for reference)
+1. Login to [Cloudflare Dashboard](https://dash.cloudflare.com/)
+2. Go to Workers & Pages → Create Worker
+3. Paste the content of `worker/uptimerobot-proxy.js`
+4. Deploy and get Worker URL (e.g., `https://your-worker.workers.dev`)
+5. Set environment variable `VITE_API_PROXY_URL` to `https://your-worker.workers.dev/v2/getMonitors` in EdgeOne Pages
+6. Redeploy the project
 
 ## Tech Stack
 
@@ -140,14 +132,6 @@ If using Cloudflare (see `worker/uptimerobot-proxy.js` for reference)
 - [TanStack Query](https://tanstack.com/query) - Data fetching
 - [Zustand](https://zustand-demo.pmnd.rs/) - State management
 - [Recharts](https://recharts.org/) - Charts
-
-## Custom Domain
-
-EdgeOne Pages supports custom domain binding:
-
-1. Bind your domain in EdgeOne console
-2. Configure DNS resolution (CNAME or A record)
-3. Access your site after DNS takes effect
 
 ## FAQ
 

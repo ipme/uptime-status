@@ -42,7 +42,13 @@ export async function fetchMonitors(
     response_times_limit: 12,
   };
 
-  const response = await axios.post<UptimeApiResponse>(API_URL, postdata, {
+  // 转换为 URL 编码格式
+  const formData = new URLSearchParams();
+  Object.entries(postdata).forEach(([key, value]) => {
+    formData.append(key, String(value));
+  });
+
+  const response = await axios.post<UptimeApiResponse>(API_URL, formData, {
     timeout: 15000,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
